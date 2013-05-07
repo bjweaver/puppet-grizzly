@@ -13,7 +13,7 @@
 #    License for the specific language governing permissions and limitations
 #    under the License.
 
-node /^devstack/ {
+node /^grizzly/ {
 
 
 	#set if you want to ######
@@ -25,7 +25,7 @@ node /^devstack/ {
 		$source = "https://github.com/nec-openstack/devstack-quantum-nec-openflow.git"
 	}
 	else {
-		$source = "https://github.com/openstack-dev/devstack.git"
+		$source = "https://github.com/stackforge/puppet-openstack.git"
 	}
 
 	#ensure git is installed
@@ -34,7 +34,7 @@ node /^devstack/ {
 	}
 
 	# clone the devstack repo
-	vcsrepo { "/home/vagrant/devstack":
+	vcsrepo { "/etc/puppet/module/puppet-openstack":
 		ensure 		=> present,
 		provider 	=> git,
 		source 		=> $source,
@@ -55,20 +55,20 @@ HOST_IP=10.1.2.44
 FLOATING_RANGE=10.1.2.224/27
 IMAGE_URLS+='http://uec-images.ubuntu.com/precise/current/precise-server-cloudimg-amd64-disk1.img'"
 
-    file { "/home/vagrant/devstack/localrc":
-      content 	=> "$localrc_cnt",
-      require 	=> Vcsrepo["/home/vagrant/devstack"],
-      group		=> "vagrant",
-      owner		=> "vagrant",
-    }
+   # file { "/home/vagrant/devstack/localrc":
+   #   content 	=> "$localrc_cnt",
+   #   require 	=> Vcsrepo["/home/vagrant/devstack"],
+   #   group		=> "vagrant",
+   #   owner		=> "vagrant",
+   # }
 
 	#run stack.sh as current user (vagrant)
-	exec { "/home/vagrant/devstack/stack.sh-no":
-		cwd     	=> "/home/vagrant/devstack",
-		group		=> "vagrant",
-		user		=> "vagrant",
-		logoutput	=> on_failure,
-		timeout		=> 0, # stack.sh takes time!
-		require 	=> File["/home/vagrant/devstack/localrc"],
-	}
+#	exec { "/home/vagrant/devstack/stack.sh-no":
+#		cwd     	=> "/home/vagrant/devstack",
+#		group		=> "vagrant",
+#		user		=> "vagrant",
+#		logoutput	=> on_failure,
+#		timeout		=> 0, # stack.sh takes time!
+#		require 	=> File["/home/vagrant/devstack/localrc"],
+#	}
 }

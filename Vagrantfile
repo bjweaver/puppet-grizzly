@@ -16,7 +16,7 @@
 #    License for the specific language governing permissions and limitations
 #    under the License.
 
-dhostname = "devstack.local"
+dhostname = "grizzly.local"
 
  
 
@@ -24,23 +24,23 @@ Vagrant::Config.run do |config|
 
 config.vm.boot_mode = :gui
 
-  config.vm.define :devstack do |devstack_config|
+  config.vm.define :devstack do |puppet_config|
 
-    devstack_config.vm.box = "precise64"
-    devstack_config.vm.box_url = "http://files.vagrantup.com/precise64.box"
+    puppet_config.vm.box = "precise64"
+    puppet_config.vm.box_url = "http://files.vagrantup.com/precise64.box"
 
-    # devstack_config.vm.boot_mode = :gui
-    devstack_config.vm.network  :hostonly, "10.1.2.44" #:hostonly or :bridged - default is NAT
-    devstack_config.vm.host_name = dhostname
-    devstack_config.vm.customize ["modifyvm", :id, "--memory", 1024]
-    devstack_config.ssh.max_tries = 100
+    # puppet_config.vm.boot_mode = :gui
+    #puppet_config.vm.network  :hostonly, "10.1.2.44" #:hostonly or :bridged - default is NAT
+    puppet_config.vm.host_name = dhostname
+    puppet_config.vm.customize ["modifyvm", :id, "--memory", 1024]
+    puppet_config.ssh.max_tries = 100
 
-    devstack_config.vm.provision :puppet do |devstack_puppet|
-      devstack_puppet.pp_path = "/tmp/vagrant-puppet"
-      devstack_puppet.module_path = "modules"
-      devstack_puppet.manifests_path = "manifests"
-      devstack_puppet.manifest_file = "site.pp"
-      devstack_puppet.facter = { "fqdn" => dhostname }
+    puppet_config.vm.provision :puppet do |grizzly_puppet|
+      grizzly_puppet.pp_path = "/tmp/puppet-openstack"
+      grizzly_puppet.module_path = "modules"
+      grizzly_puppet.manifests_path = "manifests"
+      grizzly_puppet.manifest_file = "site.pp"
+      grizzly_puppet.facter = { "fqdn" => dhostname }
     end
   end
 end
